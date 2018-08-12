@@ -1,0 +1,50 @@
+let next_id = 1;
+
+document.addEventListener("DOMContentLoaded", () => {
+	let choices = document.getElementById("choices");
+	let choice_template = document.getElementById("choice");
+
+	function create_choice()
+	{
+		let choice = document.createElement("div");
+		choice.classList.add("choice");
+		choice.innerHTML = choice_template.innerHTML.replace(/:id/g, next_id);
+		choice.querySelector("button.delete").addEventListener("click", () => {
+			choices.removeChild(choice);
+		});
+		choices.append(choice);
+		next_id++;
+	}
+
+	document.getElementById("add-choice").addEventListener("click", create_choice);
+	while(next_id < 4) create_choice();
+
+	let form = document.getElementById("newpoll");
+	form.addEventListener("submit", (event) => {
+		event.preventDefault();
+
+		function get_choices(form)
+		{
+			let choices = [];
+			form.querySelectorAll("#choices .choice input").forEach((el) => {
+				choices.push(el.value);
+			});
+			return choices;
+		}
+
+		fetch("/polls", {
+			method: "POST",
+			body: JSON.stringify({
+				title: form.querySelector(`input[name="title"]`).value,
+				options: get_choices(form),
+			}),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}).then((res) => {
+			return res.json();
+		}).then((json) => {
+			console.log(json);
+		});
+	});
+});
