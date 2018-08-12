@@ -11,6 +11,11 @@
     <button type="button" id="add-choice">New choice</button>
     <input type="submit" value="Create poll" />
   </form>
+  <div id="result" hidden>
+    <p>Your poll <strong>:poll_title</strong> is ready!</p>
+    <input type="text" name="pollurl" value="<?= $app_url ?>:poll_url" />
+    <a class="button" href=":poll_url">See the poll!</a>
+  </div>
 </main>
 
 <template id="choice">

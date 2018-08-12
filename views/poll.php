@@ -1,4 +1,4 @@
-<h1>mdr todo</h1>
+<h1 class="poll"><?= $poll->title ?></h1>
 <main>
 	<pre>
 		<?= var_dump($poll) ?>
