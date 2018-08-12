@@ -69,7 +69,8 @@ main button,
 main a.button
 { cursor: pointer; }
 
-main input[type="submit"]
+main input[type="submit"],
+a.button.margin
 { margin-top: 1em; }
 
 main input:focus,
@@ -120,6 +121,59 @@ h1.poll
   margin: 1.5em 5%;
   font-family: "PT Serif", serif;
   font-size: 2.5rem;
+}
+
+.option
+{
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 25rem;
+  box-sizing: border-box;
+
+  background: #141414;
+}
+.option > input
+{
+  position: absolute;
+  float: left;
+  width: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.option > .check
+{
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1em;
+  padding: 0;
+  width: 1.25em;
+  height: 1.25em;
+  background: #202020;
+}
+.option > .check::before
+{
+  content: "";
+  transition: transform 0.1s linear, border-radius 0.4s ease-out;
+  display: block;
+  background: #0088E5;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  transform: scale(0);
+}
+.option input:checked ~ .check::before
+{ border-radius: 0; transform: scale(1); }
+.option > label
+{
+  flex: 1;
+  display: block;
+  padding: 1em;
+  font-family: "PT Serif", serif;
+  font-size: 1.2em;
+  cursor: pointer;
 }
 
 footer
