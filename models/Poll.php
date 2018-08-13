@@ -22,6 +22,7 @@ class Poll
 				];
 			}
 			$poll->gen_new_id();
+			$poll->delete_token = bin2hex(openssl_random_pseudo_bytes(16));
 			$poll->save();
 			return $poll;
 		}
@@ -46,6 +47,7 @@ class Poll
 			$poll->title = $saved_poll_data->title;
 			$poll->creation_date = $saved_poll_data->creation_date;
 			$poll->options = $saved_poll_data->options;
+			$poll->delete_token = $saved_poll_data->delete_token;
 
 			dba_close($db);
 			return $poll;
@@ -61,8 +63,9 @@ class Poll
 	public $title;
 	public $creation_date;
 	public $options = [];
+	public $delete_token;
 
-	public function gen_new_id()
+	private function gen_new_id()
 	{
 		$db = dba_open(SAVE_PATH . "/polls.db", "rd");
 
@@ -97,7 +100,15 @@ class Poll
 			"title" => $this->title,
 			"creation_date" => $this->creation_date,
 			"options" => $this->options,
+			"delete_token" => $this->delete_token
 		]), $db);
+		dba_close($db);
+	}
+
+	public function delete()
+	{
+		$db = dba_open(SAVE_PATH . "/polls.db", "wd");
+		dba_delete($this->id, $db);
 		dba_close($db);
 	}
 }

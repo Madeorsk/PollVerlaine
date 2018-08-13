@@ -10,5 +10,5 @@
     <?php endforeach; ?>
     <input type="submit" value="Vote" />
   </form>
-  <a class="button margin">Jump to results</a>
+  <a class="button margin" href="/polls/<?= $poll->id ?>/results">Jump to results</a>
 </main>

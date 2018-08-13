@@ -9,7 +9,7 @@ Clone the repository :
 mkdir db && touch db/polls.db && composer install
 ```
 
-Uncomment the dba extention in `php.ini` :
+Uncomment the `dba` extention in `php.ini` :
 ```
 extension=dba
 ```
@@ -25,3 +25,5 @@ location /
 ```
 
 ## API
+
+See [API.md](API.md).
