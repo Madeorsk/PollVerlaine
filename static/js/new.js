@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			let result_el = document.getElementById("result");
 			result_el.innerHTML = result_el.innerHTML.replace(/:poll_title/g, json.title);
 			result_el.innerHTML = result_el.innerHTML.replace(/:poll_url/g, `/polls/${json.id}`);
+			result_el.innerHTML = result_el.innerHTML.replace(/:delete_url/g, `/polls/${json.id}/${json.delete_token}`);
 			result_el.removeAttribute("hidden");
 		});
 	});
