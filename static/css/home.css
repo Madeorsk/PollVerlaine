@@ -1,0 +1,47 @@
+main input[name="title"],
+main input[name="title"]:focus
+{
+  background: transparent;
+  font-family: "PT Serif", serif;
+  font-size: 1.5em;
+}
+
+@keyframes scalex
+{
+  0%
+  { transform: scaleX(0); }
+  100%
+  { transform: scaleX(1); }
+}
+
+main #choices .choice
+{
+  animation: scalex 0.2s linear;
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  width: 25rem;
+}
+main #choices .choice > *
+{ margin: 0; }
+main #choices .choice input
+{ font-family: "PT Serif", serif; }
+main #choices .choice .delete
+{
+  background: #FF2E31;
+  width: 4em;
+}
+
+@media screen and (max-width: 640px)
+{
+  main #choices .choice
+  { width: 100%; }
+  main #choices .choice input
+  { flex: 1; min-width: 0; }
+  main #choices .choice .delete
+  { flex: 0 0; min-width: 3em; }
+
+  main input[name="title"],
+  main input[name="title"]:focus
+  { font-size: 1.3em; }
+}

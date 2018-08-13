@@ -1,16 +1,7 @@
 <?php
-
 define("CIRCLE_R", 50);
 
-$COLORS = [
-	"#FF4B44", // Red.
-	"#FFD149", // Yellow.
-	"#56B3FF", // Dark blue.
-	"#FF9535", // Orange.
-	"#7DFF59", // Green.
-	"#FFAFEC", // Pink.
-	"#82FFE8", // Light blue.
-];
+$colors_number = count($colors);
 
 $total_votes = 0;
 foreach ($poll->options as $option)
@@ -33,7 +24,11 @@ function percentage_pos_y($r, $percentage)
 	<circle cx="0" cy="0" r="<?= CIRCLE_R ?>" fill="black" fill-opacity="0.2"></circle>
 	<?php
 	$used_percentage = 0;
-	foreach ($poll->options as $index => $option): ?>
-	<path d="M<?= percentage_pos_x(CIRCLE_R, $used_percentage) ?> <?= percentage_pos_y(CIRCLE_R, $used_percentage) ?> A<?= CIRCLE_R." ".CIRCLE_R ?> 0 <?= ($options_percentages[$index] > 0.5 ? 1 : 0) ?> 1 <?= percentage_pos_x(CIRCLE_R, $used_percentage + $options_percentages[$index]) ?> <?= percentage_pos_y(CIRCLE_R, $used_percentage + $options_percentages[$index]) ?> L0 0" fill="<?= $COLORS[$index%7] ?>"></path>
+	foreach ($poll->options as $index => $option):
+		if($options_percentages[$index] == 1): ?>
+	<circle cx="0" cy="0" r="<?= CIRCLE_R ?>" fill="<?= $colors[$index%$colors_number] ?>"></circle>
+	<?php elseif($options_percentages[$index] != 0): ?>
+	<path d="M<?= percentage_pos_x(CIRCLE_R, $used_percentage) ?> <?= percentage_pos_y(CIRCLE_R, $used_percentage) ?> A<?= CIRCLE_R." ".CIRCLE_R ?> 0 <?= ($options_percentages[$index] > 0.5 ? 1 : 0) ?> 1 <?= percentage_pos_x(CIRCLE_R, $used_percentage + $options_percentages[$index]) ?> <?= percentage_pos_y(CIRCLE_R, $used_percentage + $options_percentages[$index]) ?> L0 0" fill="<?= $colors[$index%$colors_number] ?>"></path>
+	<?php endif; ?>
 	<?php $used_percentage += $options_percentages[$index]; endforeach; ?>
 </svg>

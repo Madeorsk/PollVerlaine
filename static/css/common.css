@@ -1,0 +1,102 @@
+html, body
+{
+  margin: 0;
+  padding: 0;
+}
+
+body
+{
+  background: #242424;
+  color: #ECECEC;
+
+  font-family: "Nunito", sans-serif;
+}
+
+::-moz-focus-inner
+{ border: none; }
+
+body h1
+{
+  display: block;
+  margin: 1em auto;
+  font-size: 4em;
+  font-weight: 300;
+  text-align: center;
+}
+
+main
+{
+  margin: 0 5%;
+}
+
+main p
+{
+  font-size: 1.5em;
+  text-align: center;
+}
+main p strong
+{
+  font-family: "PT Serif", serif;
+  font-size: 1.2em;
+  font-weight: normal;
+}
+
+main input,
+main button,
+main a.button
+{
+  transition: background 0.1s ease-in;
+  display: block;
+  margin: auto;
+  padding: 1em;
+  width: 25rem;
+  box-sizing: border-box;
+
+  background: #141414;
+  color: #ECECEC;
+  border: none;
+  outline: none;
+
+  font-size: 1.3em;
+  text-align: center;
+  text-decoration: none;
+}
+main input[type="submit"],
+main button,
+main a.button
+{ cursor: pointer; }
+
+main input[type="submit"],
+a.button.margin
+{ margin-top: 1em; }
+
+main input:focus,
+main input[type="submit"]:hover,
+main button:hover,
+main a.button:hover
+{ background: #1D1D1D; }
+
+footer
+{
+  display: block;
+  margin: 5em;
+  color: #8E8E8E;
+
+  font-size: 0.9em;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media screen and (max-width: 640px)
+{
+  body h1
+  { font-size: 3em; }
+
+  main input,
+  main button,
+  main a.button
+  {
+    width: 100%;
+    font-size: 1.2em;
+  }
+}

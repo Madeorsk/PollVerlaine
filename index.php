@@ -92,6 +92,7 @@ Flight::route("POST /polls/@id:[a-fA-F0-9]+/vote", function ($id) {
 });
 
 Flight::route("GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
+	global $VERLAINE;
 	$poll = Poll::load_poll($id);
 	if ($poll)
 	{
@@ -99,8 +100,8 @@ Flight::route("GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
 			Flight::json(format_poll($poll)); //TODO Add a svg for results?
 		else
 		{
-			Flight::render("svg/results", ["poll" => $poll], "results_chart");
-			Flight::render("results", ["poll" => $poll], "body_content");
+			Flight::render("svg/results", ["poll" => $poll, "colors" => $VERLAINE["chart_colors"]], "results_chart");
+			Flight::render("results", ["poll" => $poll, "chart_colors" => $VERLAINE["chart_colors"]], "body_content");
 			Flight::render("layout");
 		}
 	}

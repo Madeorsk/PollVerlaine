@@ -2,7 +2,8 @@
 <html>
 <head>
 	<meta charset="UTF-8" />
-	<title>Poll Verlaine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poll Verlaine</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css" />
 </head>
 <body>
