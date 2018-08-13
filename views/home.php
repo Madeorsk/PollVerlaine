@@ -9,6 +9,8 @@
     <div id="choices">
     </div>
     <button type="button" id="add-choice">New choice</button>
+    <input type="checkbox" name="unique_ip" value="unique_ip" checked />
+    <label for="unique_ip">Allow multiple votes from a single IP</label>
     <input type="submit" value="Create poll" />
   </form>
   <div id="result" hidden>

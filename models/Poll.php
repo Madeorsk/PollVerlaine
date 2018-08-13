@@ -21,6 +21,7 @@ class Poll
 					"votes" => 0,
 				];
 			}
+			$poll->settings = $request_data->settings;
 			$poll->gen_new_id();
 			$poll->delete_token = bin2hex(openssl_random_pseudo_bytes(16));
 			$poll->save();
@@ -48,6 +49,8 @@ class Poll
 			$poll->creation_date = $saved_poll_data->creation_date;
 			$poll->options = $saved_poll_data->options;
 			$poll->delete_token = $saved_poll_data->delete_token;
+			$poll->settings = $saved_poll_data->settings;
+			$poll->ips = $saved_poll_data->ips;
 
 			dba_close($db);
 			return $poll;
@@ -63,6 +66,8 @@ class Poll
 	public $title;
 	public $creation_date;
 	public $options = [];
+	public $settings = [];
+	public $ips = [];
 	public $delete_token;
 
 	private function gen_new_id()
@@ -83,13 +88,23 @@ class Poll
 	/**
 	 * Vote for a list of options.
 	 * @param array $options - Array of integers containing voted options.
+	 * @return bool
 	 */
 	public function vote(array $options)
 	{
+		if($this->settings['unique_ip'] === true)
+		{
+			if(isset($this->ips[Flight::request()->query["ip"]]))
+				return false;
+			else
+				$this->ips["test"] = true;
+		}
+
 		// For each option in the list, add 1 to the vote number in the poll data.
 		foreach ($options as $option)
 			if (isset($this->options[intval($option)])) // Check invalid options id.
 				$this->options[intval($option)]->votes++;
+		return true;
 	}
 
 	public function save()
@@ -100,7 +115,9 @@ class Poll
 			"title" => $this->title,
 			"creation_date" => $this->creation_date,
 			"options" => $this->options,
-			"delete_token" => $this->delete_token
+			"delete_token" => $this->delete_token,
+			"ips" => $this->ips,
+			"settings" => $this->settings
 		]), $db);
 		dba_close($db);
 	}

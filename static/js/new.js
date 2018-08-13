@@ -37,6 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			body: JSON.stringify({
 				title: form.querySelector(`input[name="title"]`).value,
 				options: get_choices(form),
+                settings: {
+                    "unique_ip": form.querySelector(`input[name="unique_ip"]`).checked,
+                }
 			}),
 			headers: {
 				"Content-Type": "application/json",
