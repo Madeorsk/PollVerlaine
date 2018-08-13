@@ -86,6 +86,23 @@ Flight::route("POST /polls/@id:[a-fA-F0-9]+/vote", function ($id) {
 		Flight::notFound();
 });
 
+Flight::route("GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
+	$poll = Poll::load_poll($id);
+	if ($poll)
+	{
+		if (Flight::request()->type === "application/json")
+			Flight::json(format_poll($poll)); //TODO Add a svg for results?
+		else
+		{
+			Flight::render("svg/results", ["poll" => $poll], "results_chart");
+			Flight::render("results", ["poll" => $poll], "body_content");
+			Flight::render("layout");
+		}
+	}
+	else
+		Flight::notFound();
+});
+
 Flight::route("/", function () {
 	global $VERLAINE;
 	Flight::render("home", ["app_url" => $VERLAINE["app_url"]], "body_content");

@@ -176,6 +176,41 @@ h1.poll
   cursor: pointer;
 }
 
+/*
+ * JHFNDSJH
+ */
+
+main.results
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+main.results > *
+{ flex: 1; }
+
+main.results .chart
+{ flex: 2; max-height: 70vh; }
+main.results .chart > svg
+{ display: block; margin: auto; height: 100%; }
+
+main.results .options table
+{
+  margin: 0;
+  padding: 0 3em;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  font-size: 1.5em;
+}
+main.results .options table td
+{ text-align: right; }
+main.results .options .number
+{
+  font-family: "PT Serif", serif;
+  font-size: 2em;
+}
+
 footer
 {
   display: block;
