@@ -14,15 +14,12 @@ class Poll
 			$poll = new Poll();
 			$poll->title = $request_data->title;
 			$poll->creation_date = (new DateTime())->getTimestamp();
-			$id = 0;
 			foreach ($request_data->options as $option)
 			{
 				$poll->options[] = [
-					"id" => $id,
 					"label" => $option,
 					"votes" => 0,
 				];
-				$id++;
 			}
 			$poll->gen_new_id();
 			$poll->save();
@@ -78,6 +75,18 @@ class Poll
 
 		dba_close($db);
 		$this->id = $new_id;
+	}
+
+	/**
+	 * Vote for a list of options.
+	 * @param array $options - Array of integers containing voted options.
+	 */
+	public function vote(array $options)
+	{
+		// For each option in the list, add 1 to the vote number in the poll data.
+		foreach ($options as $option)
+			if (isset($this->options[intval($option)])) // Check invalid options id.
+				$this->options[intval($option)]->votes++;
 	}
 
 	public function save()
