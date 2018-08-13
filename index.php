@@ -104,7 +104,7 @@ Flight::route("GET|DELETE /polls/@id:[a-fA-F0-9]+/@token:[a-fA-F0-9]+", function
 			Flight::json(format_poll($poll), 204);
 		else
 		{
-			Flight::redirect('/');
+			Flight::redirect('/', 204);
 		}
 	}
 	else
