@@ -20,13 +20,14 @@ Flight::route("POST /polls", function () {
 		$request_json = $request->data;
 		$poll = Poll::create_poll($request_json);
 		if ($poll)
-			Flight::json(format_poll($poll), 206);
+			Flight::json(format_poll($poll), 201);
 		else
 			Flight::halt(403, "<h1>403 Forbidden</h1><h3>Invalid data.</h3>");
 	}
 	else
 		Flight::halt(403, "<h1>403 Forbidden</h1><h3>Invalid Content-Type.</h3>");
 });
+
 Flight::route("GET /polls/@id:[a-fA-F0-9]+", function ($id) {
 	$poll = Poll::load_poll($id);
 	if ($poll)
