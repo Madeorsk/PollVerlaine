@@ -27,6 +27,7 @@ Flight::route("POST /polls", function () {
 	else
 		Flight::halt(403, "<h1>403 Forbidden</h1><h3>Invalid Content-Type.</h3>");
 });
+
 Flight::route("GET /polls/@id:[a-fA-F0-9]+", function ($id) {
 	$poll = Poll::load_poll($id);
 	if ($poll)
