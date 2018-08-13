@@ -58,7 +58,6 @@ Return a Poll.
 
 | Attribute       | Description                          | Nullable   |
 | --------------- | ------------------------------------ | ---------- |
-| `id`            |                                      | no         |
 | `label`         | The option.                          | no         |
 
 ### Settings
