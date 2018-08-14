@@ -50,7 +50,7 @@ class Poll
 			$poll->options = $saved_poll_data->options;
 			$poll->delete_token = $saved_poll_data->delete_token;
 			$poll->settings = $saved_poll_data->settings;
-			$poll->ips = $saved_poll_data->ips;
+			$poll->ips = (array) $saved_poll_data->ips;
 
 			dba_close($db);
 			return $poll;
@@ -92,12 +92,12 @@ class Poll
 	 */
 	public function vote(array $options)
 	{
-		if($this->settings['unique_ip'] === true)
+		if($this->settings->unique_ip === false)
 		{
-			if(isset($this->ips[Flight::request()->query["ip"]]))
+			if(isset($this->ips[Flight::request()->ip]))
 				return false;
 			else
-				$this->ips["test"] = true;
+				$this->ips[Flight::request()->ip] = true;
 		}
 
 		// For each option in the list, add 1 to the vote number in the poll data.
