@@ -4,23 +4,27 @@ A small alternative to Straw Poll.
 
 ## Installation
 
-Clone the repository :
+Clone the repository:
 ```sh
 mkdir db && touch db/polls.db && composer install
 ```
 
-Uncomment the `dba` extention in `php.ini` :
+Enable the `dba` extension in `php.ini`:
 ```
 extension=dba
 ```
 
+### Configuration
+
 Rename `config/app.example.php` to `config/app.php`.
 
-Sample configuration for nginx :
+Configure `app_url` to the root url of Poll Verlaine.
+
+Sample configuration for nginx:
 ```nginx
 location /
 {
-    try_files $uri /index.php =404;
+    try_files $uri /index.php;
 }
 ```
 

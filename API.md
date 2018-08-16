@@ -4,7 +4,7 @@
 
 ### Create a poll
 ```
-POST /polls
+    POST /polls
 ```
 
 | Field          | Description                          | Optional   |
@@ -13,7 +13,7 @@ POST /polls
 | `options`      | All the options. Array of strings.   | no         |
 | `settings`     | A Settings object.                   | yes        |
 
-Return a Poll.
+Return a Poll with `delete_token`.
 
 ### Retrieve a poll
 
@@ -26,7 +26,7 @@ Return a Poll.
 ### Vote
 
 ```
-POST /polls/:id/vote 
+POST /polls/:id/vote
 ```
 | Field          | Description                                  | Optional   |
 | -------------- | -------------------------------------------- | ---------- |
@@ -37,7 +37,7 @@ Return a Poll.
 ### Delete a poll
 
 ```
-DELETE /polls/:id
+DELETE /polls/:id/:token
 ```
 
 Return a Poll.
@@ -46,22 +46,25 @@ Return a Poll.
 
 ### Poll
 
-| Attribute       | Description                          | Nullable   |
-| --------------- | ------------------------------------ | ---------- |
-| `id`            |                                      | no         |
-| `title`         | The question.                        | no         |
-| `options`       | All the options. Array of Options.   | no         |
-| `settings`      | A Settings object.                   | no         |
-| `creation_date` | Creation date.                       | no         |
+| Attribute          | Description                          | Nullable   |
+| ------------------ | ------------------------------------ | ---------- |
+| `id`               |                                      | no         |
+| `title`            | The question.                        | no         |
+| `options`          | All the options. Array of Options.   | no         |
+| `settings`         | A Settings object.                   | no         |
+| `creation_date`    | Creation date.                       | no         |
+| `delete_token`     | Deletion token.                      | yes        |
 
 ### Options
 
-| Attribute       | Description                          | Nullable   |
-| --------------- | ------------------------------------ | ---------- |
-| `label`         | The option.                          | no         |
+| Attribute          | Description                          | Nullable   |
+| ------------------ | ------------------------------------ | ---------- |
+| `label`            | The option.                          | no         |
+| `votes`            | Numbers of votes.                    | yes        |
 
 ### Settings
 
-| Attribute       | Description                          | Nullable   |
-| --------------- | ------------------------------------ | ---------- |
-| `unique_ip`     | One vote per IP address. Boolean.    | yes        |
+| Attribute          | Description                                     | Nullable   |
+| ------------------ | ----------------------------------------------- | ---------- |
+| `unique_ip`        | One vote per IP address. Boolean.               | yes        |
+| `multiple_choices` | Allow multiple choices in one vote. Boolean.    | yes        |
