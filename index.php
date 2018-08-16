@@ -41,8 +41,14 @@ Flight::route("GET /polls/@id:[a-fA-F0-9]+", function ($id) {
 			Flight::json(format_poll($poll));
 		else
 		{
-			Flight::render("poll", ["poll" => $poll], "body_content");
-			Flight::render("layout");
+			// If unique_ip option is enabled => Only allow unregistered IPs.
+			if (!$poll->settings->unique_ip && isset($poll->ips[Flight::request()->ip]))
+				Flight::redirect("/polls/$id/results"); // A vote is already registered with this IP: redirect.
+			else
+			{
+				Flight::render("poll", ["poll" => $poll], "body_content");
+				Flight::render("layout");
+			}
 		}
 	}
 	else
@@ -59,17 +65,14 @@ Flight::route("POST /polls/@id:[a-fA-F0-9]+/vote", function ($id) {
 		{
 			if (isset(Flight::request()->data["options"]) && is_array(Flight::request()->data["options"]))
 			{ // Check that an options id array exists.
-				//TODO Check that only the authorized number of options are selected.
-				if($poll->vote(Flight::request()->data["options"]) === false) // Vote for the given options.
-				{
-					Flight::halt(403, "<h1>403 Forbidden</h1><h3>Too many votes for this IP address.</h3>");
-				}
-				else
+				if ($poll->vote(Flight::request()->data["options"])) // Vote for the given options.
 				{
 					// Then save and show poll data.
 					$poll->save();
 					Flight::json(format_poll($poll));
 				}
+				else
+					Flight::halt(403, "<h1>403 Forbidden</h1><h3>Too many votes for this IP address or too many options selected.</h3>");
 			}
 			else
 				Flight::halt(403, "<h1>403 Forbidden</h1><h3>Invalid data.</h3>");
@@ -79,18 +82,16 @@ Flight::route("POST /polls/@id:[a-fA-F0-9]+/vote", function ($id) {
 			if (isset(Flight::request()->data["options"]))
 			{ // Check that any data has been sent.
 				$selected_options = Flight::request()->data["options"];
-				if (is_string($selected_options))
-				{ // If it is a string, input[type="radio"] were used so only one option is selected.
-					if($poll->vote([intval($selected_options)]) === false) // Vote for the selected option.
-					{
-						Flight::redirect('/', 401);
-					}
-					else
+				if (is_array($selected_options))
+				{
+					if($poll->vote($selected_options)) // Vote for the selected option.
 					{
 						$poll->save();
 						Flight::redirect("/polls/$id/results"); // Redirect to the results.
 					}
-				} //TODO: Multiple options case.
+					else
+						Flight::redirect("/polls/$id"); // Error: Redirect to the vote page.
+				}
 				else
 					Flight::redirect("/polls/$id"); // Error: Redirect to the vote page.
 			}

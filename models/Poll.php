@@ -4,6 +4,16 @@ require __DIR__ . "/../config/app.php";
 
 define("SAVE_PATH", __DIR__ . "/../db");
 
+define("DEFAULT_SETTINGS", ["unique_ip" => true, "multiple_choices" => false]);
+
+function settings_or_default($settings)
+{
+	return [
+		"unique_ip" => isset($settings["unique_ip"]) ? $settings["unique_ip"] : DEFAULT_SETTINGS["unique_ip"],
+		"multiple_choices" => isset($settings["multiple_choices"]) ? $settings["multiple_choices"] : DEFAULT_SETTINGS["multiple_choices"],
+	];
+}
+
 class Poll
 {
 	/**
@@ -23,7 +33,7 @@ class Poll
 					"votes" => 0,
 				];
 			}
-			$poll->settings = $request_data->settings;
+			$poll->settings = isset($request_data->settings) ? settings_or_default($request_data->settings) : DEFAULT_SETTINGS;
 			$poll->gen_new_id();
 			$poll->delete_token = bin2hex(openssl_random_pseudo_bytes(16));
 			$poll->save();
@@ -70,7 +80,7 @@ class Poll
 	public $title;
 	public $creation_date;
 	public $options = [];
-	public $settings = [];
+	public $settings;
 	public $ips = [];
 	public $delete_token;
 
@@ -98,13 +108,19 @@ class Poll
 	 */
 	public function vote(array $options)
 	{
-		if($this->settings->unique_ip === false)
-		{
-			if(isset($this->ips[Flight::request()->ip]))
-				return false;
+		if (empty($options))
+			return false; // Disallow void selection vote. TODO: Allow it in settings?
+
+		if (!$this->settings->unique_ip)
+		{ // If unique_ip option is enabled => Only allow unregistered IPs.
+			if (isset($this->ips[Flight::request()->ip]))
+				return false; // A vote is already registered with this IP: error.
 			else
-				$this->ips[Flight::request()->ip] = true;
+				$this->ips[Flight::request()->ip] = true; // We register the IP in the used IPs array.
 		}
+
+		if (!$this->settings->multiple_choices && count($options) > 1)
+			return false; // If multiple_choices is not selected, disallow an options array with more than one selected option.
 
 		// For each option in the list, add 1 to the vote number in the poll data.
 		foreach ($options as $option)
@@ -125,7 +141,7 @@ class Poll
 			"options" => $this->options,
 			"delete_token" => $this->delete_token,
 			"ips" => $this->ips,
-			"settings" => $this->settings
+			"settings" => $this->settings,
 		]), $db);
 		dba_close($db);
 	}

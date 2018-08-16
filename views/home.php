@@ -15,6 +15,11 @@
       <label for="unique_ip" class="check"></label>
       <label for="unique_ip">Allow multiple votes from a single IP</label>
     </div>
+    <div class="option">
+      <input type="checkbox" name="multiple_choices" value="multiple_choices" id="multiple_choices" />
+      <label for="multiple_choices" class="check"></label>
+      <label for="multiple_choices">Allow to select multiple choices in one vote</label>
+    </div>
     <input type="submit" value="Create poll" />
   </form>
   <div id="result" hidden>
