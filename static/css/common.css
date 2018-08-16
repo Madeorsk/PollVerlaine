@@ -29,12 +29,16 @@ main
   margin: 0 5%;
 }
 
-main p
+main p,
+main label
 {
+  display: block;
+  margin: 0.5em;
   font-size: 1.5em;
   text-align: center;
 }
-main p strong
+main p strong,
+main label strong
 {
   font-family: "PT Serif", serif;
   font-size: 1.2em;
@@ -50,6 +54,7 @@ main a.button
   margin: auto;
   padding: 1em;
   width: 25rem;
+  border-radius: 0;
   box-sizing: border-box;
 
   background: #141414;
@@ -76,6 +81,12 @@ main button:hover,
 main a.button:hover
 { background: #1D1D1D; }
 
+main hr
+{
+  border: solid #343434 thin;
+  width: 25rem;
+}
+
 footer
 {
   display: block;
@@ -99,4 +110,6 @@ footer
     width: 100%;
     font-size: 1.2em;
   }
+  main hr
+  { width: 100%; }
 }

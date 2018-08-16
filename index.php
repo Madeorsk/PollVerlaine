@@ -125,23 +125,18 @@ Flight::route("GET|DELETE /polls/@id:[a-fA-F0-9]+/@token:[a-fA-F0-9]+", function
 	$poll = Poll::load_poll($id);
 	if ($poll)
 	{
-		if (Flight::request()->type === "application/json")
+		if ($poll->delete_token === $token)
 		{
-			if ($poll->delete_token === $token)
-			{
-				$poll->delete();
+			$poll->delete();
+			if (Flight::request()->type === "application/json")
 				Flight::json(format_poll($poll), 204);
-			}
 			else
-				Flight::halt(401, "<h1>401 Unauthorized</h1><h3>Invalid token.</h3>");
+				Flight::redirect('/', 308);
 		}
 		else
 		{
-			if ($poll->delete_token === $token)
-			{
-				$poll->delete();
-				Flight::redirect('/', 204);
-			}
+			if (Flight::request()->type === "application/json")
+				Flight::halt(401, "<h1>401 Unauthorized</h1><h3>Invalid token.</h3>");
 			else
 				Flight::redirect('/', 401);
 		}

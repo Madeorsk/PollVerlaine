@@ -11,4 +11,6 @@ $VERLAINE = [
 		"#FFAFEC", // Pink.
 		"#82FFE8", // Light blue.
 	],
+	"optimize_on_delete" => false,
+	"db_handler" => "db4", // See available handlers by using `php -r "var_dump(dba_handlers());"`
 ];

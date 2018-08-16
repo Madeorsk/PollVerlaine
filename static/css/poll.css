@@ -52,10 +52,12 @@ h1.poll
 {
   flex: 1;
   display: block;
+  margin: 0;
   padding: 1em;
   font-family: "PT Serif", serif;
   font-size: 1.2em;
   cursor: pointer;
+  text-align: left;
 }
 
 @media screen and (max-width: 640px)

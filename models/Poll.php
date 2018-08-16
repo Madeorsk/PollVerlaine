@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . "/../config/app.php";
+
 define("SAVE_PATH", __DIR__ . "/../db");
 
 class Poll
@@ -38,7 +40,9 @@ class Poll
 	 */
 	public static function load_poll($id)
 	{
-		$db = dba_open(SAVE_PATH . "/polls.db", "rd");
+		global $VERLAINE;
+
+		$db = dba_open(SAVE_PATH . "/polls.db", "rd", $VERLAINE["db_handler"]);
 
 		if (dba_exists($id, $db))
 		{
@@ -72,7 +76,9 @@ class Poll
 
 	private function gen_new_id()
 	{
-		$db = dba_open(SAVE_PATH . "/polls.db", "rd");
+		global $VERLAINE;
+
+		$db = dba_open(SAVE_PATH . "/polls.db", "rd", $VERLAINE["db_handler"]);
 
 		function gen_id()
 		{ return bin2hex(openssl_random_pseudo_bytes(16)); }
@@ -109,7 +115,9 @@ class Poll
 
 	public function save()
 	{
-		$db = dba_open(SAVE_PATH . "/polls.db", "wd");
+		global $VERLAINE;
+
+		$db = dba_open(SAVE_PATH . "/polls.db", "wd", $VERLAINE["db_handler"]);
 		$func = (dba_exists($this->id, $db) ? "dba_replace" : "dba_insert");
 		$func($this->id, json_encode([
 			"title" => $this->title,
@@ -124,8 +132,12 @@ class Poll
 
 	public function delete()
 	{
-		$db = dba_open(SAVE_PATH . "/polls.db", "wd");
+		global $VERLAINE;
+
+		$db = dba_open(SAVE_PATH . "/polls.db", "wd", $VERLAINE["db_handler"]);
 		dba_delete($this->id, $db);
+		if ($VERLAINE["optimize_on_delete"])
+			dba_optimize($db);
 		dba_close($db);
 	}
 }
