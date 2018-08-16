@@ -1,6 +1,6 @@
 # PollVerlaine
 
-A small alternative to Straw Poll.
+A light self-hosted alternative to Straw Poll.
 
 ## Installation
 
