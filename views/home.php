@@ -1,6 +1,6 @@
 <body class="home">
-<script src="/static/js/fetch.min.js"></script>
-<script src="/static/js/new.js"></script>
+<script src="<?= $app_url ?>/static/js/fetch.min.js"></script>
+<script src="<?= $app_url ?>/static/js/new.js"></script>
 
 <h1>Poll Verlaine</h1>
 <main>
@@ -28,7 +28,7 @@
     <input type="text" id="pollurl" name="pollurl" value="<?= $app_url ?>:poll_url" />
     <label for="deleteurl">Delete URL</label>
     <input type="text" id="deleteurl" name="deleteurl" value="<?= $app_url ?>:delete_url" />
-    <a class="button" href=":poll_url">See the poll!</a>
+    <a class="button" href="<?= $app_url ?>:poll_url">See the poll!</a>
   </div>
 </main>
 

@@ -4,6 +4,8 @@ require __DIR__ . "/src/models/Poll.php";
 require __DIR__ . "/src/Format.php";
 require __DIR__ . "/config/app.php";
 
+Flight::set("flight.base_url", $VERLAINE["app_url"]);
+
 Flight::route("POST /polls", function () {
 	$request = Flight::request();
 	if ($request->type === "application/json")
@@ -20,6 +22,7 @@ Flight::route("POST /polls", function () {
 });
 
 Flight::route("GET /polls/@id:[a-fA-F0-9]+", function ($id) {
+	global $VERLAINE;
 	$poll = Poll::load_poll($id);
 	if ($poll)
 	{
@@ -32,7 +35,7 @@ Flight::route("GET /polls/@id:[a-fA-F0-9]+", function ($id) {
 				Flight::redirect("/polls/$id/results"); // A vote is already registered with this IP: redirect.
 			else
 			{
-				Flight::render("poll", ["poll" => $poll], "body_content");
+				Flight::render("poll", ["app_url" => $VERLAINE["app_url"], "poll" => $poll], "body_content");
 				Flight::render("layout");
 			}
 		}
@@ -73,16 +76,16 @@ Flight::route("POST /polls/@id:[a-fA-F0-9]+/vote", function ($id) {
 					if($poll->vote($selected_options)) // Vote for the selected option.
 					{
 						$poll->save();
-						Flight::redirect("/polls/$id/results"); // Redirect to the results.
+						Flight::redirect("/polls/$id/results", 301); // Redirect to the results.
 					}
 					else
-						Flight::redirect("/polls/$id"); // Error: Redirect to the vote page.
+						Flight::redirect("/polls/$id", 301); // Error: Redirect to the vote page.
 				}
 				else
-					Flight::redirect("/polls/$id"); // Error: Redirect to the vote page.
+					Flight::redirect("/polls/$id", 301); // Error: Redirect to the vote page.
 			}
 			else
-				Flight::redirect("/polls/$id"); // Error: Redirect to the vote page.
+				Flight::redirect("/polls/$id", 301); // Error: Redirect to the vote page.
 			//TODO Error code in query parameters?
 		}
 	}
@@ -125,7 +128,7 @@ Flight::route("GET|DELETE /polls/@id:[a-fA-F0-9]+/@token:[a-fA-F0-9]+", function
 			if (Flight::request()->type === "application/json")
 				Flight::halt(401, "<h1>401 Unauthorized</h1><h3>Invalid token.</h3>");
 			else
-				Flight::redirect('/');
+				Flight::redirect('/', 301);
 		}
 	}
 	else

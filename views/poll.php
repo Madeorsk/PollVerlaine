@@ -1,6 +1,6 @@
 <h1 class="poll"><?= $poll->title ?></h1>
 <main>
-  <form action="/polls/<?= $poll->id ?>/vote" method="POST" id="poll">
+  <form action="<?= $app_url ?>/polls/<?= $poll->id ?>/vote" method="POST" id="poll">
     <?php foreach ($poll->options as $id => $option): ?>
     <div class="option">
       <input type="<?= $poll->settings->multiple_choices ? "checkbox" : "radio" ?>" name="options[]" value="<?= $id ?>" id="option-<?= $id ?>" />
@@ -10,5 +10,5 @@
     <?php endforeach; ?>
     <input type="submit" value="Vote" />
   </form>
-  <a class="button margin" href="/polls/<?= $poll->id ?>/results">Jump to results</a>
+  <a class="button margin" href="<?= $app_url ?>/polls/<?= $poll->id ?>/results">Jump to results</a>
 </main>

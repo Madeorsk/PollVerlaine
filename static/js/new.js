@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	while(next_id < 4) create_choice();
 
 	let form = document.getElementById("newpoll");
+	console.log(`${location.href}/polls`);
 	form.addEventListener("submit", (event) => {
 		event.preventDefault();
 
@@ -32,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return choices;
 		}
 
-		fetch("/polls", {
+		fetch(`${location.href}${ location.href.endsWith("/") ? "" : "/" }polls`, {
 			method: "POST",
 			body: JSON.stringify({
 				title: form.querySelector(`input[name="title"]`).value,
