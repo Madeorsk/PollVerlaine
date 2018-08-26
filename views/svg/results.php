@@ -9,7 +9,7 @@ foreach ($poll->options as $option)
 
 $options_percentages = [];
 foreach ($poll->options as $option)
-	$options_percentages[] = $option->votes / $total_votes;
+	$options_percentages[] = ($total_votes == 0) ? 0 : $option->votes / $total_votes;
 
 function percentage_pos_x($r, $percentage)
 { return round($r * sin(2 * M_PI * $percentage), 2); }
