@@ -1,22 +1,8 @@
 <?php
 require __DIR__ . "/vendor/autoload.php";
-require __DIR__ . "/models/Poll.php";
+require __DIR__ . "/src/models/Poll.php";
+require __DIR__ . "/src/Format.php";
 require __DIR__ . "/config/app.php";
-
-function format_poll($poll, $with_delete_token = false)
-{
-	$array = [
-		"id" => $poll->id,
-		"title" => $poll->title,
-		"creation_date" => $poll->creation_date,
-		"options" => $poll->options,
-	];
-
-	if ($with_delete_token === true)
-		$array['delete_token'] = $poll->delete_token;
-
-	return $array;
-}
 
 Flight::route("POST /polls", function () {
 	$request = Flight::request();
@@ -25,7 +11,7 @@ Flight::route("POST /polls", function () {
 		$request_json = $request->data;
 		$poll = Poll::create_poll($request_json);
 		if ($poll)
-			Flight::json(format_poll($poll, true), 201);
+			Flight::json(array_merge(Format::poll($poll), ["delete_token" => $poll->delete_token]), 201);
 		else
 			Flight::halt(403, "<h1>403 Forbidden</h1><h3>Invalid data.</h3>");
 	}
@@ -38,7 +24,7 @@ Flight::route("GET /polls/@id:[a-fA-F0-9]+", function ($id) {
 	if ($poll)
 	{
 		if (Flight::request()->type === "application/json")
-			Flight::json(format_poll($poll));
+			Flight::json(Format::poll($poll));
 		else
 		{
 			// If unique_ip option is enabled => Only allow unregistered IPs.
@@ -69,7 +55,7 @@ Flight::route("POST /polls/@id:[a-fA-F0-9]+/vote", function ($id) {
 				{
 					// Then save and show poll data.
 					$poll->save();
-					Flight::json(format_poll($poll));
+					Flight::json(Format::poll($poll));
 				}
 				else
 					Flight::halt(403, "<h1>403 Forbidden</h1><h3>Too many votes for this IP address or too many options selected.</h3>");
@@ -110,7 +96,7 @@ Flight::route("GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
 	if ($poll)
 	{
 		if (Flight::request()->type === "application/json")
-			Flight::json(format_poll($poll)); //TODO Add a svg for results?
+			Flight::json(Format::poll($poll)); //TODO Add a svg for results?
 		else
 		{
 			Flight::render("svg/results", ["poll" => $poll, "colors" => $VERLAINE["chart_colors"]], "results_chart");
@@ -130,7 +116,7 @@ Flight::route("GET|DELETE /polls/@id:[a-fA-F0-9]+/@token:[a-fA-F0-9]+", function
 		{
 			$poll->delete();
 			if (Flight::request()->type === "application/json")
-				Flight::json(format_poll($poll), 204);
+				Flight::json(Format::poll($poll), 204);
 			else
 				Flight::redirect('/', 308);
 		}
@@ -139,7 +125,7 @@ Flight::route("GET|DELETE /polls/@id:[a-fA-F0-9]+/@token:[a-fA-F0-9]+", function
 			if (Flight::request()->type === "application/json")
 				Flight::halt(401, "<h1>401 Unauthorized</h1><h3>Invalid token.</h3>");
 			else
-				Flight::redirect('/', 401);
+				Flight::redirect('/');
 		}
 	}
 	else

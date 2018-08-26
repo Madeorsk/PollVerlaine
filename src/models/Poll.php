@@ -1,8 +1,8 @@
 <?php
 
-require __DIR__ . "/../config/app.php";
+require __DIR__ . "/../../config/app.php";
 
-define("SAVE_PATH", __DIR__ . "/../db");
+define("SAVE_PATH", __DIR__ . "/../../db");
 
 define("DEFAULT_SETTINGS", ["unique_ip" => true, "multiple_choices" => false]);
 
