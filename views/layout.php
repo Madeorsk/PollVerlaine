@@ -10,7 +10,7 @@
 <body>
 <?= $body_content ?>
 <footer>
-  <a>I am on GitHub!</a>
+  <a href="https://git.cant.at/Madeorsk/PollVerlaine" target="_blank">Here is my code!</a>
 </footer>
 </body>
 </html>

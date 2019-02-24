@@ -97,6 +97,8 @@ footer
   font-weight: 700;
   text-align: center;
 }
+footer a
+{ color: #8E8E8E; text-decoration: none; }
 
 @media screen and (max-width: 640px)
 {
