@@ -38,7 +38,7 @@ Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+", function ($id) {
 			{
 				Flight::render("poll", ["app_url" => $VERLAINE["app_url"], "poll" => $poll], "body_content");
 				Flight::render("opengraph", ["poll" => $poll, "app_url" => $VERLAINE["app_url"]], "head");
-				Flight::render("layout");
+				Flight::render("layout", ["title" => $poll->title]);
 			}
 		}
 	}
@@ -107,7 +107,7 @@ Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
 			Flight::render("svg/results", ["poll" => $poll, "colors" => $VERLAINE["chart_colors"]], "results_chart");
 			Flight::render("results", ["poll" => $poll, "chart_colors" => $VERLAINE["chart_colors"]], "body_content");
 			Flight::render("opengraph", ["poll" => $poll, "app_url" => $VERLAINE["app_url"]], "head");
-			Flight::render("layout");
+			Flight::render("layout", ["title" => $poll->title]);
 		}
 	}
 	else
