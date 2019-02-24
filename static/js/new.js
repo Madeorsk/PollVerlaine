@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	while(next_id < 4) create_choice();
 
 	let form = document.getElementById("newpoll");
-	console.log(`${location.href}/polls`);
 	form.addEventListener("submit", (event) => {
 		event.preventDefault();
 
