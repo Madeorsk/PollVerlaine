@@ -22,6 +22,7 @@ Configure `app_url` to the root url of Poll Verlaine.
 
 Sample configuration for nginx:
 ```nginx
+root /path/to/PollVerlaine/webroot; # The webroot directory contains all publicly exposed files.
 location /
 {
     try_files $uri /index.php;
