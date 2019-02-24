@@ -1,10 +1,11 @@
 <?php
-require __DIR__ . "/vendor/autoload.php";
-require __DIR__ . "/src/models/Poll.php";
-require __DIR__ . "/src/Format.php";
-require __DIR__ . "/config/app.php";
+require __DIR__ . "/../vendor/autoload.php";
+require __DIR__ . "/../src/models/Poll.php";
+require __DIR__ . "/../src/Format.php";
+require __DIR__ . "/../config/app.php";
 
 Flight::set("flight.base_url", $VERLAINE["app_url"]);
+Flight::set("flight.views.path", "../views");
 
 Flight::route("POST /polls", function () {
 	$request = Flight::request();
