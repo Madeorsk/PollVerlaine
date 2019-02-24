@@ -29,6 +29,13 @@ function percentage_pos_y($r, $percentage)
 	<circle cx="0" cy="0" r="<?= CIRCLE_R ?>" fill="<?= $colors[$index%$colors_number] ?>"></circle>
 	<?php elseif($options_percentages[$index] != 0): ?>
 	<path d="M<?= percentage_pos_x(CIRCLE_R, $used_percentage) ?> <?= percentage_pos_y(CIRCLE_R, $used_percentage) ?> A<?= CIRCLE_R." ".CIRCLE_R ?> 0 <?= ($options_percentages[$index] > 0.5 ? 1 : 0) ?> 1 <?= percentage_pos_x(CIRCLE_R, $used_percentage + $options_percentages[$index]) ?> <?= percentage_pos_y(CIRCLE_R, $used_percentage + $options_percentages[$index]) ?> L0 0" fill="<?= $colors[$index%$colors_number] ?>"></path>
+	<?php
+	$x = percentage_pos_x(CIRCLE_R, $used_percentage + $options_percentages[$index]/2);
+	$x = $x - $x/4;
+	$y = percentage_pos_y(CIRCLE_R, $used_percentage + $options_percentages[$index]/2);
+	$y = $y - $y/4;
+	?>
+	<text x="<?= $x ?>" y="<?= $y + 1.5 ?>" fill="rgba(0, 0, 0, 0.4)" text-anchor="middle" font-size="4" font-weight="600"><?= $option->votes ?></text>
 	<?php endif; ?>
 	<?php $used_percentage += $options_percentages[$index]; endforeach; ?>
 </svg>
