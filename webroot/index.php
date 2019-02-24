@@ -22,7 +22,7 @@ Flight::route("POST /polls", function () {
 		Flight::halt(403, "<h1>403 Forbidden</h1><h3>Invalid Content-Type.</h3>");
 });
 
-Flight::route("GET /polls/@id:[a-fA-F0-9]+", function ($id) {
+Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+", function ($id) {
 	global $VERLAINE;
 	$poll = Poll::load_poll($id);
 	if ($poll)
@@ -95,7 +95,7 @@ Flight::route("POST /polls/@id:[a-fA-F0-9]+/vote", function ($id) {
 		Flight::notFound();
 });
 
-Flight::route("GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
+Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
 	global $VERLAINE;
 	$poll = Poll::load_poll($id);
 	if ($poll)
@@ -138,13 +138,11 @@ Flight::route("GET|DELETE /polls/@id:[a-fA-F0-9]+/@token:[a-fA-F0-9]+", function
 		Flight::notFound();
 });
 
-Flight::route("GET /polls/@id:[a-fA-F0-9]+/results/svg", function ($id) {
+Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+/results/svg", function ($id) {
 	global $VERLAINE;
 	$poll = Poll::load_poll($id);
 	if ($poll)
-	{
 		Flight::render("svg/results", ["poll" => $poll, "colors" => $VERLAINE["chart_colors"]]);
-	}
 	else
 		Flight::notFound();
 });
