@@ -101,7 +101,7 @@ Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
 	if ($poll)
 	{
 		if (Flight::request()->type === "application/json")
-			Flight::json(Format::poll($poll)); //TODO Add a svg for results?
+			Flight::json(array_merge(Format::poll($poll), ["image" => $VERLAINE["app_url"]."/polls/{$id}/results/svg"]));
 		else
 		{
 			Flight::render("svg/results", ["poll" => $poll, "colors" => $VERLAINE["chart_colors"]], "results_chart");
@@ -110,6 +110,15 @@ Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+/results", function ($id) {
 			Flight::render("layout");
 		}
 	}
+	else
+		Flight::notFound();
+});
+
+Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+/results/svg", function ($id) {
+	global $VERLAINE;
+	$poll = Poll::load_poll($id);
+	if ($poll)
+		Flight::render("svg/results", ["poll" => $poll, "colors" => $VERLAINE["chart_colors"]]);
 	else
 		Flight::notFound();
 });
@@ -134,15 +143,6 @@ Flight::route("GET|DELETE /polls/@id:[a-fA-F0-9]+/@token:[a-fA-F0-9]+", function
 				Flight::redirect('/', 301);
 		}
 	}
-	else
-		Flight::notFound();
-});
-
-Flight::route("HEAD|GET /polls/@id:[a-fA-F0-9]+/results/svg", function ($id) {
-	global $VERLAINE;
-	$poll = Poll::load_poll($id);
-	if ($poll)
-		Flight::render("svg/results", ["poll" => $poll, "colors" => $VERLAINE["chart_colors"]]);
 	else
 		Flight::notFound();
 });
