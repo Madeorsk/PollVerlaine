@@ -5,7 +5,7 @@
     <div class="option">
       <input type="<?= $poll->settings->multiple_choices ? "checkbox" : "radio" ?>" name="options[]" value="<?= $id ?>" id="option-<?= $id ?>" />
       <label for="option-<?= $id ?>" class="check"></label>
-      <label for="option-<?= $id ?>"><?= $option->label ?></label>
+      <label for="option-<?= $id ?>"><?= htmlspecialchars($option->label) ?></label>
     </div>
     <?php endforeach; ?>
     <input type="submit" value="Vote" />

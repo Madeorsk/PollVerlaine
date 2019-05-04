@@ -11,7 +11,7 @@ foreach ($poll->options as $option)
       <?php foreach ($poll->options as $index => $option): ?>
       <tr>
         <td class="number"><?= $option->votes ?></td>
-        <td style="color: <?= $chart_colors[$index%$chart_colors_number] ?>"><?= $option->label ?></td>
+        <td style="color: <?= $chart_colors[$index%$chart_colors_number] ?>"><?= htmlspecialchars($option->label) ?></td>
         <td><?= $total_votes == 0 ? 0 : round($option->votes / $total_votes, 3)*100 ?>%</td>
       </tr>
       <?php endforeach; ?>
